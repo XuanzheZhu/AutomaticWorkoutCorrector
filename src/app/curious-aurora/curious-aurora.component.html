@@ -1,0 +1,110 @@
+<head>
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+</head>
+
+<body>
+  <div id="loading" style='display:flex'>
+    <div class="spinner-text">
+      Loading model...
+    </div>
+    <div class="sk-spinner sk-spinner-pulse"></div>
+  </div>
+
+  <p>
+    <mat-toolbar color="primary" class="mainToolbar" [class.mat-elevation-z3]="true">
+      <span>Automatic Workout Corrector</span>
+    </mat-toolbar>
+  </p>
+
+  <mat-grid-list cols="5" rows="2">
+
+    <mat-grid-tile [colspan] = "3" [rowspan] = "2">
+      <div id='main' style='display:none; position: absolute; left: 10%;'>
+        <video id="video" playsinline style="display: none"></video>
+        <canvas id="output"></canvas>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan] = "2" [rowspan] = "1">
+
+      <div class="footer-text" style="position: absolute; left: 0%; font-size: 20px;">
+
+        <mat-form-field appearance="fill" style="width: 250px; font-size: 18px;">
+          <mat-label>Select a Workout</mat-label>
+          <mat-select #workoutSelect [(value)]="selectedWorkout" (selectionChange)="updateSelectedWorkout($event)">
+            <mat-option>None</mat-option>
+            <mat-option value="sideLift">Side Lateral Raise</mat-option>
+            <mat-option value="squat">Squat</mat-option>
+            <mat-option value="pushup">Push-up</mat-option>
+          </mat-select>
+        </mat-form-field><br>
+
+        <!--<span id="poseType">Please choose a pose type</span> <br>-->
+        <span id="poseFeedback" style="font-size: 24px; color: mediumblue;">Waiting...</span> <br> <br>
+
+        <mat-grid-list cols="5" rows="1" style="width: 400px;">
+          <mat-grid-tile [colspan] = "3">
+            <div style="position: absolute; left: 0%;">
+            Side Lateral Raise: <span id="sideLiftCount">0</span><br>
+            Squat: <span id="squatCount">0</span><br>
+            Push-up: <span id="pushup">0</span><br>
+            <!--<table mat-table [dataSource]="workoutCounts" class="mat-elevation-z3">
+              <ng-container matColumnDef="workoutType">
+                <th mat-header-cell *matHeaderCellDef> Workout </th>
+                <td mat-cell *matCellDef="let element"> {{element.workoutType}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="count">
+                <th mat-header-cell *matHeaderCellDef> Count </th>
+                <td mat-cell *matCellDef="let element"> {{element.count}} </td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>-->
+          </div>
+          </mat-grid-tile>
+          <mat-grid-tile [colspan] = "2">
+            <button mat-raised-button color="primary" (click)="resetCounts()" style="font-size: 18px; height: 42px;">Reset Counts</button>
+          </mat-grid-tile>
+        </mat-grid-list>
+        <!--<button mat-raised-button color="primary" (click)="openSnackBar()">Test SnackBar</button>
+        <input type="button" id="resetCountsButton" value="Reset Counts"><br>
+        <input type="button" id="sideLiftButton" value="Side Lift">
+        <input type="button" id="squatButton" value="Squat"> <br>-->
+
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [colspan] = "2" [rowspan] = "1">
+      <div style="position: absolute; left: 0%;">
+        <video id="videoTest1" src="../../assets/video/sideLift.mp4" muted autoplay loop style="width: 75%; height: auto; display: none"></video>
+        <video id="videoTest2" src="../../assets/video/squat.mp4" muted autoplay loop style="width: 75%; height: auto; display: none"></video>
+      </div>
+    </mat-grid-tile >
+
+  </mat-grid-list>
+
+  <p style="font-size: 18px; position: absolute; bottom: 20px; left: 80px;">Author: Yiheng Chen, Xuanzhe Zhu</p>
+
+  <div>
+    <audio controls id="WellDoneAudio" style="display: none">
+      <source src="../../assets/audio/WellDone.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls id="LeftArmHigherAudio" style="display: none">
+      <source src="../../assets/audio/LeftArmHigher.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls id="RightArmHigherAudio" style="display: none">
+      <source src="../../assets/audio/RightArmHigher.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls id="BothArmsHigherAudio" style="display: none">
+      <source src="../../assets/audio/BothArmsHigher.mp3" type="audio/mpeg">
+    </audio>
+    <audio controls id="SquatDeeperAudio" style="display: none">
+      <source src="../../assets/audio/SquatDeeper.mp3" type="audio/mpeg">
+    </audio>      
+  </div>
+  <ul id="colors" style="display: none"></ul>
+</body>
